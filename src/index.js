@@ -206,7 +206,7 @@ export default class extends Component {
   }
 
   shouldComponentUpdate = (nextProps, nextState) => {
-      return btoa(nextProps) !== btoa(this.props) || nextState.index !== this.state.index
+    return nextState.index !== this.state.index
   }
 
   componentDidMount() {
@@ -514,7 +514,7 @@ export default class extends Component {
       if (offset[dir] === this.internals.offset[dir]) {
         newState.offset = { x: 0, y: 0 }
         newState.offset[dir] = offset[dir] + 1
-        this.setState(newState,cb)
+        this.setState(newState, cb)
       } else {
         newState.offset = offset
         this.setState(newState, cb)
