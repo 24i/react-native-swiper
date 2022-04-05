@@ -200,9 +200,13 @@ export default class extends Component {
     if (!nextProps.autoplay && this.autoplayTimer)
       clearTimeout(this.autoplayTimer)
     if (nextProps.index === this.props.index) return
-    // this.setState(
-    //   this.initState(nextProps, this.props.index !== nextProps.index)
-    // )
+    this.setState(
+      this.initState(nextProps, this.props.index !== nextProps.index)
+    )
+  }
+
+  shouldComponentUpdate = (nextProps, nextState) => {
+      return btoa(nextProps) !== btoa(this.props) || nextState.index !== this.state.index
   }
 
   componentDidMount() {
@@ -509,14 +513,13 @@ export default class extends Component {
       if (offset[dir] === this.internals.offset[dir]) {
         newState.offset = { x: 0, y: 0 }
         newState.offset[dir] = offset[dir] + 1
-        this.setState(newState, () => {
-          this.setState({ offset: offset }, cb)
-        })
+        this.setState(newState,cb)
       } else {
         newState.offset = offset
         this.setState(newState, cb)
       }
     } else {
+      newState.offset = offset
       this.setState(newState, cb)
     }
   }
