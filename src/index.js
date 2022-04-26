@@ -206,6 +206,8 @@ export default class extends Component {
   }
 
   shouldComponentUpdate = (nextProps, nextState) => {
+    if (nextProps.height !== this.state.height) return true
+
     return nextState.index !== this.state.index
   }
 
