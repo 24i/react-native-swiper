@@ -206,7 +206,13 @@ export default class extends Component {
   }
 
   shouldComponentUpdate = (nextProps, nextState) => {
-    if (nextProps.height !== this.state.height) return true
+    if (nextProps.height !== this.state.height) {
+      this.scrollView.scrollTo({
+        x: (nextState.index + 1) * nextProps.width,
+        animated: false
+      })
+      return true
+    }
 
     return nextState.index !== this.state.index
   }
@@ -234,7 +240,7 @@ export default class extends Component {
     if (this.props.children !== prevProps.children) {
       if (this.props.loadMinimal && Platform.OS === 'ios') {
         this.setState({ ...this.props, index: this.state.index })
-      } else {
+      } else if (this.props.height === this.state.height) {
         this.setState(
           this.initState({ ...this.props, index: this.state.index }, true)
         )
@@ -815,7 +821,11 @@ export default class extends Component {
     const loopVal = loop ? 1 : 0
     let pages = []
 
-    const pageStyle = [{ width: width, height: height }, styles.slide]
+    const pageDimension = {
+      width: this.props.width || width,
+      height: this.props.height || height
+    }
+    const pageStyle = [pageDimension, styles.slide]
     const pageStyleLoading = {
       width,
       height,
